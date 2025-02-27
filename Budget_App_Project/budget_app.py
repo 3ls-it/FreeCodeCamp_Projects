@@ -7,12 +7,12 @@ class Category:
 
 
     def __str__(self):
+        width = 30
+
         # Construct summary headline 
         header = []
         title = str(self.category)
         title_len = len(title)
-        width = 30
-
         star_num = (width - title_len) // 2
         header.append('*' * star_num)
         header.append(title)
@@ -20,6 +20,7 @@ class Category:
         headline  = ''.join(header)
 
         # Headline is 29 in length when title_len is odd  
+        # so fix it. 
         if len(headline) < width:
             headline += '*'
 
@@ -125,5 +126,6 @@ category_list = [food, clothing, test, test2]
 def create_spend_chart(categories):
     for cat in categories:
         print(cat)
+        print(type(cat))
 
 create_spend_chart(category_list)
