@@ -4,6 +4,7 @@ class Category:
     def __init__(self, category):
         self.category = category
         self.ledger = []
+    # End __init__() 
 
 
     def __str__(self):
@@ -24,7 +25,7 @@ class Category:
         if len(headline) < width:
             headline += '*'
 
-        # do entries 
+        # Do entries 
         entries = ''
         for entry in self.ledger:
             descr = entry['description'][:23]
@@ -37,6 +38,7 @@ class Category:
         total = '\nTotal: ' + str(self._total())
 
         return '\n' + headline + entries + total
+    # End __str__() 
 
 
     def _total(self):
@@ -44,10 +46,12 @@ class Category:
         for entry in self.ledger:
             tot += entry['amount']
         return tot
+    # End _total() 
 
 
     def check_balance(self):
         return self._total()
+    # End check_balance() 
 
 
     def check_funds(self, amount):
@@ -55,10 +59,12 @@ class Category:
         if amount > balance:
             return False
         return True
+    # End check_funds() 
 
 
     def deposit(self, amount, description = ''):
         self.ledger.append({'amount': amount, 'description': description})
+    # End deposit() 
 
 
     def withdraw(self, amount, description = ''):
@@ -66,6 +72,7 @@ class Category:
             self.ledger.append({'amount': amount * -1, 'description': description})
             return True
         return False
+    # End withdraw() 
 
 
     def transfer(self, amount, other_cat):
@@ -74,10 +81,62 @@ class Category:
             other_cat.deposit(amount, f'Transfer from {self.category}')
             return True
         return False
+    # End transfer() 
+# End class Category 
+
+
+def create_spend_chart(categories):
+    #  Calculate total & get percentages list  
+    spent = []
+    for cat in categories:
+        tot = 0
+        for entry in cat.ledger:
+            if entry["amount"] < 0:
+                tot += entry["amount"]
+        spent.append(abs(tot))
+    total_amount = sum(spent)
+
+    percentages = []
+    for amount in spent:
+        percentages.append(int((amount/total_amount) * 10) * 10)
+
+    # Do chart from percentages 
+    chart = "Percentage spent by category\n"
+    for percent in range(100, -1, -10):
+        chart += str(percent).rjust(3) + "|"
+        for p in percentages:
+            if p >= percent:
+                chart += " o "
+            else:
+                chart += "   "
+        chart += " \n"
+
+    # Do line 
+    chart += "    " + "-" * (len(categories) * 3 + 1) + "\n"
+
+    # Find longest category name 
+    max_height = 0
+    for cat in categories:
+        height = len(cat.category)
+        if height > max_height:
+            max_height = height
+
+    # Put category names in columns  
+    for i in range(max_height):
+        chart += "     "
+        for cat in categories:
+            if i < len(cat.category):
+                chart += cat.category[i] + "  "
+            else:
+                chart += "   "
+        if i < max_height - 1:
+            chart += "\n"
+
+    print(chart)
+# End create_spend_chart() 
 
 
 # Some tests 
-
 # FreeCodeCamp examples 
 food = Category('Food')
 food.deposit(1000, 'deposit')
@@ -90,42 +149,31 @@ food.transfer(50, clothing)
 
 # My own tests
 test = Category('Test')
-#print(test)
-
-#print("")
-#print('Deposit $500')
 test.deposit(500, 'Test deposit')
-#print('Balance: ', test.check_balance())
-#print('Withdraw $50')
-"""
-if test.withdraw(50, 'Test withdrawal'):
-    print('Balance: ', test.check_balance())
-print('Withdraw $800')
-if test.withdraw(800, 'Test withdrawal'):
-    print('Balance: ', test.check_balance())
-else:
-    print('Insufficient funds')
-"""
 
-#print("")
 test2 = Category('Test 2')
 test2.deposit(2000, 'For transfer')
-#print(test2)
-#print("")
-#print('Balance: ', test2.check_balance())
-#print('Transfer $1000 to Test')
 test2.transfer(1000, test)
-#print('Balance: ', test2.check_balance())
 
-#print("")
-#print(test)
+food = Category("Food")
+clothing = Category("Clothing")
+auto = Category("Auto")
 
-category_list = [food, clothing, test, test2]
+food.deposit(1000, "initial deposit")
+food.withdraw(150.25, "groceries")
+food.withdraw(50.75, "restaurant")
 
+clothing.deposit(500, "initial deposit")
+clothing.withdraw(100, "jeans")
 
-def create_spend_chart(categories):
-    for cat in categories:
-        print(cat)
-        print(type(cat))
+auto.deposit(1000, "initial deposit")
+auto.withdraw(200, "car repair")
 
+category_list = [food, clothing, auto]
 create_spend_chart(category_list)
+
+print(food)
+print(clothing)
+print(auto)
+#print(test)
+#print(test2)
