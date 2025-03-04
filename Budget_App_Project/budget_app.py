@@ -37,7 +37,7 @@ class Category:
         # Get total  
         total = '\nTotal: ' + str(self._total())
 
-        return '\n' + headline + entries + total
+        return headline + entries + total
     # End __str__() 
 
 
@@ -64,6 +64,7 @@ class Category:
 
     def deposit(self, amount, description = ''):
         self.ledger.append({'amount': amount, 'description': description})
+        return self._total()
     # End deposit() 
 
 
@@ -77,9 +78,14 @@ class Category:
 
     def transfer(self, amount, other_cat):
         if self.check_funds(amount):
-            self.withdraw(amount, f'Transfer to {other_cat.category}')
-            other_cat.deposit(amount, f'Transfer from {self.category}')
-            return True
+            if self.withdraw(amount, f'Transfer to {other_cat.category}'):
+                other_cat.deposit(amount, f'Transfer from {self.category}')
+                print(self.category,':')
+                print(self.ledger)
+                print()
+                print(other_cat.category, ':')
+                print(other_cat.ledger)
+                return True
         return False
     # End transfer() 
 # End class Category 
@@ -101,7 +107,7 @@ def create_spend_chart(categories):
         percentages.append(int((amount/total_amount) * 10) * 10)
 
     # Do chart from percentages 
-    chart = "Percentage spent by category\n"
+    chart = 'Percentage spent by category\n'
     for percent in range(100, -1, -10):
         chart += str(percent).rjust(3) + "|"
         for p in percentages:
@@ -111,7 +117,7 @@ def create_spend_chart(categories):
                 chart += "   "
         chart += " \n"
 
-    # Do line 
+    # Do line at bottom 
     chart += "    " + "-" * (len(categories) * 3 + 1) + "\n"
 
     # Find longest category name 
@@ -131,13 +137,13 @@ def create_spend_chart(categories):
                 chart += "   "
         if i < max_height - 1:
             chart += "\n"
-
-    print(chart)
+    return chart
 # End create_spend_chart() 
 
 
 # Some tests 
 # FreeCodeCamp examples 
+"""
 food = Category('Food')
 food.deposit(1000, 'deposit')
 food.withdraw(10.15, 'groceries')
@@ -146,6 +152,7 @@ clothing = Category('Clothing')
 food.transfer(50, clothing)
 #print(food)
 #print(clothing)
+"""
 
 # My own tests
 test = Category('Test')
@@ -159,9 +166,10 @@ food = Category("Food")
 clothing = Category("Clothing")
 auto = Category("Auto")
 
-food.deposit(1000, "initial deposit")
-food.withdraw(150.25, "groceries")
-food.withdraw(50.75, "restaurant")
+food.deposit(900, 'deposit')
+food.withdraw(45.67, 'milk, cereal, eggs, bacon, bread')
+print('\nFood Balance:')
+print(food.check_balance())
 
 clothing.deposit(500, "initial deposit")
 clothing.withdraw(100, "jeans")
@@ -169,11 +177,21 @@ clothing.withdraw(100, "jeans")
 auto.deposit(1000, "initial deposit")
 auto.withdraw(200, "car repair")
 
+"""
 category_list = [food, clothing, auto]
-create_spend_chart(category_list)
+spend_chart =  create_spend_chart(category_list)
+print(spend_chart)
+print()
+"""
 
+"""
 print(food)
+print()
 print(clothing)
+print()
 print(auto)
+print()
+"""
 #print(test)
 #print(test2)
+
