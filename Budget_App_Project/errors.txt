@@ -1,5 +1,0 @@
-// running tests
-6. Calling food.deposit(900, 'deposit') and food.withdraw(45.67, 'milk, cereal, eggs, bacon, bread') should return a balance of 854.33.
-9. Calling transfer on a category object should reduce the balance in the category object.
-10. The transfer method should increase the balance of the category object passed as its argument.
-// tests completed
