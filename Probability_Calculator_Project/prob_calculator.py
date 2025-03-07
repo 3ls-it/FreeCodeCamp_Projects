@@ -12,10 +12,11 @@ class Hat:
 
     def __str__(self):
         kwargs = {i: getattr(self, i) for i in vars(self)}
-        args = 'Hat:\n'
+        desc = 'Hat:\n'
         for key, value in kwargs.items():
-            args += str(key)+'='+str(value)+'\n'
-        return args
+            desc += str(key)+'='+str(value)+'\n'
+        return desc
+
 
 # End class
 
