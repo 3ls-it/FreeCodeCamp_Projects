@@ -19,7 +19,7 @@ class Rectangle:
         return self.width * self.height
 
     def get_perimeter(self):
-        return 2 * self.width + 2 * self.height
+        return 2*self.width + 2*self.height
 
     def get_diagonal(self):
         return (self.width**2 + self.height**2)**.5
