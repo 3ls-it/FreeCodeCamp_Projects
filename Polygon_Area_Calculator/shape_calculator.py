@@ -30,10 +30,12 @@ class Rectangle:
         return ('\n'.join('*' * self.width for i in range(self.height)))+'\n'
 
     def get_amount_inside(self, other):
-        """
-        Takes another shape (square or rectangle) as an argument. Returns the number of times the passed in shape could fit inside the shape (with no rotations). For instance, a rectangle with a width of 4 and a height of 8 could fit in two squares with sides of 4.
-        """
-        pass
+        if other.width > self.width or other.height > self.height:
+            return 0
+        elif other.width <= self.width and other.height <= self.height:
+            nw = self.width // other.width
+            nh = self.height // other.height
+            return nw * nh
 
 
 class Square(Rectangle):
@@ -59,6 +61,7 @@ class Square(Rectangle):
         self.set_side(h)
 
 ## Tests
+"""
 r1 = Rectangle(4, 6)
 print(r1)
 print(f'Area: {r1.get_area()}')
@@ -93,16 +96,4 @@ print(f'Perimeter: {s2.get_perimeter()}')
 print(f'Diagonal: {s2.get_diagonal()}')
 print()
 print(s2.get_picture())
-
-
-"""
-Rectangle class
-
-When a Rectangle object is created, it should be initialized with width and height attributes. The class should also contain the following methods:
-
-
-get_amount_inside: Takes another shape (square or rectangle) as an argument. Returns the number of times the passed in shape could fit inside the shape (with no rotations). For instance, a rectangle with a width of 4 and a height of 8 could fit in two squares with sides of 4.
-
-Additionally, if an instance of a Rectangle is represented as a string, it should look like: 'Rectangle(width=5, height=10)'.
-
 """
