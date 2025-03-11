@@ -1,6 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/env python3 
 import copy
 import random
+from random import randint
 
 
 class Hat:
@@ -24,7 +25,17 @@ class Hat:
     # End __str__()
 
     def draw(self, nb):
-        pass
+        sz = len(self.contents)
+        if nb >= sz:
+            return self.contents
+
+        drawn = []
+        for _ in range(nb):
+            b = randint(1, sz)
+            drawn.append(self.contents[b-1])
+            del self.contents[b-1]
+            sz -= 1
+        return drawn
     # End draw() 
 # End class
 
@@ -46,13 +57,20 @@ print('Object string\n', hat)
 print('Object args dict\n', hat.kwargs)
 print()
 print('Object contents\n', hat.contents)
+print()
+print('Draw 4\n', hat.draw(4))
+print()
+print('New contents\n', hat.contents)
 
+"""
 hat2 = Hat()
+print('Hat 2')
 print('Object string\n', hat2)
 
 print('Object args dict\n', hat2.kwargs)
 print()
 print('Object contents\n', hat2.contents)
+"""
 
 """
 Build a Probability Calculator Project
@@ -80,7 +98,7 @@ A hat will always be created with at least one ball. The arguments passed into t
 The Hat class should have a draw method that accepts an argument indicating the number of balls to draw from the hat. This method should remove balls at random from contents and return those balls as a list of strings. The balls should not go back into the hat during the draw, similar to an urn experiment without replacement. If the number of balls to draw exceeds the available quantity, return all the balls.
 
 
-Create experiment()
+Create experiment() function
 
 Next, create an experiment function  (not inside the Hat class). This function should accept the following arguments:
 
