@@ -3,21 +3,21 @@ import copy
 import random
 
 
-
 class Hat:
 
     def __init__(self, **kwargs):
-        for key, value in kwargs.items():
+        self.kwargs = kwargs
+        self.contents = []
+        for key, value in self.kwargs.items():
             setattr(self, key, value)
+            for _ in range(value):
+                self.contents.append(key)
 
     def __str__(self):
-        kwargs = {i: getattr(self, i) for i in vars(self)}
         desc = 'Hat:\n'
-        for key, value in kwargs.items():
+        for key, value in self.kwargs.items():
             desc += str(key)+'='+str(value)+'\n'
         return desc
-
-
 # End class
 
 
@@ -33,7 +33,11 @@ hat = Hat(black=6, red=4, green=3)
 #                  num_balls_drawn=5,
 #                  num_experiments=2000)
 
-print(hat)
+print('Object string\n', hat)
+
+print('Object args dict\n', hat.kwargs)
+print()
+print('Object contents\n', hat.contents)
 
 
 """
