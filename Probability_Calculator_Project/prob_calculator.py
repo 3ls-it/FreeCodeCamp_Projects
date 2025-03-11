@@ -12,12 +12,20 @@ class Hat:
             setattr(self, key, value)
             for _ in range(value):
                 self.contents.append(key)
+        if not self.contents:
+            self.contents.append('black')
+    # End __init__() 
 
     def __str__(self):
         desc = 'Hat:\n'
         for key, value in self.kwargs.items():
             desc += str(key)+'='+str(value)+'\n'
         return desc
+    # End __str__()
+
+    def draw(self, nb):
+        pass
+    # End draw() 
 # End class
 
 
@@ -39,6 +47,12 @@ print('Object args dict\n', hat.kwargs)
 print()
 print('Object contents\n', hat.contents)
 
+hat2 = Hat()
+print('Object string\n', hat2)
+
+print('Object args dict\n', hat2.kwargs)
+print()
+print('Object contents\n', hat2.contents)
 
 """
 Build a Probability Calculator Project
@@ -51,6 +65,7 @@ For this project, you will write a program to determine the approximate probabil
 
 Create Hat Class
 
+DONE
 First, create a Hat class. The class should take a variable number of arguments that specify the number of balls of each color that are in the hat. For example, a class object could be created in any of these ways:
 
 ```python
@@ -59,6 +74,7 @@ hat2 = Hat(red=5, orange=4)
 hat3 = Hat(red=5, orange=4, black=1, blue=0, pink=2, striped=9)
 ```
 
+DONE
 A hat will always be created with at least one ball. The arguments passed into the hat object upon creation should be converted to a contents instance variable. contents should be a list of strings containing one item for each ball in the hat. Each item in the list should be a color name representing a single ball of that color. For example, if your hat is {'red': 2, 'blue': 1}, contents should be ['red', 'red', 'blue'].
 
 The Hat class should have a draw method that accepts an argument indicating the number of balls to draw from the hat. This method should remove balls at random from contents and return those balls as a list of strings. The balls should not go back into the hat during the draw, similar to an urn experiment without replacement. If the number of balls to draw exceeds the available quantity, return all the balls.
