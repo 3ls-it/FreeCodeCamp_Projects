@@ -25,12 +25,11 @@ class Hat:
     def draw(self, nb: int) -> list:
         self.contents = copy(self.contents_cpy)
         sz = len(self.contents)
-        
-        if nb >= sz:
-            return self.contents
-
         drawn = []
+
         for _ in range(nb):
+            if sz == 0:
+                break
             b = randint(1, sz)
             drawn.append(self.contents[b-1])
             del self.contents[b-1]
@@ -77,6 +76,7 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
     return M/N
 # End experiment() 
 
+# Test
 hat = Hat(black=6, red=4, green=3)
 probability = experiment(hat=hat,
                   expected_balls={'red':2,'green':1},
