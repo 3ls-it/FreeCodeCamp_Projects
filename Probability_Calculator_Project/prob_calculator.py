@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/env python3 
-import copy
+from collections import Counter as cntr
+from copy import copy
 import random
 from random import randint
 
@@ -8,24 +9,23 @@ class Hat:
 
     def __init__(self, **kwargs):
         self.kwargs = kwargs
-        self.contents = []
-        for key, value in self.kwargs.items():
-            setattr(self, key, value)
-            for _ in range(value):
-                self.contents.append(key)
-        if not self.contents:
-            self.contents.append('black')
+        self.contents = self.make_contents(self.kwargs)
+        self.contents_cpy = copy(self.contents)
     # End __init__() 
 
-    def __str__(self):
+
+    def __str__(self) -> str:
         desc = 'Hat:\n'
         for key, value in self.kwargs.items():
             desc += str(key)+'='+str(value)+'\n'
         return desc
     # End __str__()
 
-    def draw(self, nb):
+
+    def draw(self, nb: int) -> list:
+        self.contents = copy(self.contents_cpy)
         sz = len(self.contents)
+        
         if nb >= sz:
             return self.contents
 
@@ -35,42 +35,55 @@ class Hat:
             drawn.append(self.contents[b-1])
             del self.contents[b-1]
             sz -= 1
+
         return drawn
     # End draw() 
+
+
+    def make_contents(self, ball_dict: dict) -> list:
+        cont =[]
+        for key, value in ball_dict.items():
+            for _ in range(value):
+                cont.append(key)
+        if not cont:
+            cont.append('black')
+
+        return cont
+    # End make_contents() 
 # End class
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
-    pass
+    expected = hat.make_contents(expected_balls)
+    num_balls = num_balls_drawn
+    N = num_experiments
+    M = 0
 
+    ## Internal function
+    def compare(list1: list, list2: list) -> bool:
+        count1 = cntr(list1)
+        count2 = cntr(list2)
+        for el, cnt in count2.items():
+            if count1[el] < cnt: 
+                return False
+        return True
+    ##
+
+    for _ in range(N):
+        drawn_balls = hat.draw(num_balls)
+        if compare(drawn_balls, expected):
+            M += 1
+        
+    return M/N
 # End experiment() 
 
-
 hat = Hat(black=6, red=4, green=3)
-#probability = experiment(hat=hat,
-#                  expected_balls={'red':2,'green':1},
-#                  num_balls_drawn=5,
-#                  num_experiments=2000)
+probability = experiment(hat=hat,
+                  expected_balls={'red':2,'green':1},
+                  num_balls_drawn=5,
+                  num_experiments=2000)
 
-print('Object string\n', hat)
-
-print('Object args dict\n', hat.kwargs)
-print()
-print('Object contents\n', hat.contents)
-print()
-print('Draw 4\n', hat.draw(4))
-print()
-print('New contents\n', hat.contents)
-
-"""
-hat2 = Hat()
-print('Hat 2')
-print('Object string\n', hat2)
-
-print('Object args dict\n', hat2.kwargs)
-print()
-print('Object contents\n', hat2.contents)
-"""
+print(probability)
 
 """
 Build a Probability Calculator Project
@@ -95,6 +108,7 @@ hat3 = Hat(red=5, orange=4, black=1, blue=0, pink=2, striped=9)
 DONE
 A hat will always be created with at least one ball. The arguments passed into the hat object upon creation should be converted to a contents instance variable. contents should be a list of strings containing one item for each ball in the hat. Each item in the list should be a color name representing a single ball of that color. For example, if your hat is {'red': 2, 'blue': 1}, contents should be ['red', 'red', 'blue'].
 
+DONE
 The Hat class should have a draw method that accepts an argument indicating the number of balls to draw from the hat. This method should remove balls at random from contents and return those balls as a list of strings. The balls should not go back into the hat during the draw, similar to an urn experiment without replacement. If the number of balls to draw exceeds the available quantity, return all the balls.
 
 
@@ -116,8 +130,7 @@ The number of experiments to perform. (The more experiments performed, the more 
 
 The experiment function should return a probability.
 
-
-For example, if you want to determine the probability of getting at least two red balls and one green ball when you draw five balls from a hat containing six black, four red, and three green. To do this, you will perform N experiments, count how many times M you get at least two red balls and one green ball, and estimate the probability as M/N. Each experiment consists of starting with a hat containing the specified balls, drawing several balls, and checking if you got the balls you were attempting to draw.
+For example, if you want to determine the probability of getting at least two red balls and one green ball when you draw five balls from a hat containing six black, four red, and three green. To do this, you will perform N experiments, count how many times, M, you get at least two red balls and one green ball, and estimate the probability as M/N. Each experiment consists of starting with a hat containing the specified balls, drawing several balls, and checking if you got the balls you were attempting to draw.
 
 Here is how you would call the experiment function based on the example above with 2000 experiments:
 
