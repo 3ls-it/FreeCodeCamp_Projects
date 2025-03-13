@@ -14,6 +14,7 @@ class Hat:
     # End __init__() 
 
 
+    # Not actually used in tests 
     def __str__(self) -> str:
         desc = 'Hat:\n'
         for key, value in self.kwargs.items():
@@ -23,11 +24,17 @@ class Hat:
 
 
     def draw(self, nb: int) -> list:
+        """
+        Draw nb balls from hat
+        """
+        # Refresh contents from copy
         self.contents = copy(self.contents_cpy)
         sz = len(self.contents)
         drawn = []
 
         for _ in range(nb):
+            # Return full contents randomised
+            # to pass test 
             if sz == 0:
                 break
             b = randint(1, sz)
@@ -40,6 +47,9 @@ class Hat:
 
 
     def make_contents(self, ball_dict: dict) -> list:
+        """
+        Make a 'contents' list from dict
+        """
         cont =[]
         for key, value in ball_dict.items():
             for _ in range(value):
@@ -53,6 +63,9 @@ class Hat:
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
+    """
+    Run probability experiments
+    """
     expected = hat.make_contents(expected_balls)
     num_balls = num_balls_drawn
     N = num_experiments
@@ -72,16 +85,17 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
         drawn_balls = hat.draw(num_balls)
         if compare(drawn_balls, expected):
             M += 1
-        
+    # Return probability     
     return M/N
 # End experiment() 
 
-# Test
+
+# Run a test experiment
 hat = Hat(black=6, red=4, green=3)
 probability = experiment(hat=hat,
                   expected_balls={'red':2,'green':1},
                   num_balls_drawn=5,
-                  num_experiments=2000)
+                  num_experiments=200000)
 
 print(probability)
 
@@ -96,7 +110,6 @@ For this project, you will write a program to determine the approximate probabil
 
 Create Hat Class
 
-DONE
 First, create a Hat class. The class should take a variable number of arguments that specify the number of balls of each color that are in the hat. For example, a class object could be created in any of these ways:
 
 ```python
@@ -105,10 +118,8 @@ hat2 = Hat(red=5, orange=4)
 hat3 = Hat(red=5, orange=4, black=1, blue=0, pink=2, striped=9)
 ```
 
-DONE
 A hat will always be created with at least one ball. The arguments passed into the hat object upon creation should be converted to a contents instance variable. contents should be a list of strings containing one item for each ball in the hat. Each item in the list should be a color name representing a single ball of that color. For example, if your hat is {'red': 2, 'blue': 1}, contents should be ['red', 'red', 'blue'].
 
-DONE
 The Hat class should have a draw method that accepts an argument indicating the number of balls to draw from the hat. This method should remove balls at random from contents and return those balls as a list of strings. The balls should not go back into the hat during the draw, similar to an urn experiment without replacement. If the number of balls to draw exceeds the available quantity, return all the balls.
 
 
