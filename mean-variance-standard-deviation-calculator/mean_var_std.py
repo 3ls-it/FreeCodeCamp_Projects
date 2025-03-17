@@ -1,7 +1,5 @@
-#!/data/data/com.termux/files/usr/bin/env python3
+#!/usr/bin/env python3
 import numpy as np
-from math import sqrt
-
 
 
 def calculate(list: list) -> dict:
@@ -9,38 +7,29 @@ def calculate(list: list) -> dict:
     if len(list) != 9:
         raise ValueError("List must contain nine numbers.")
 
-    a1_mu, a1_var, a1_sigma, a1_max, a1_min, a1_sum = 0, 0, 0, 0, 0, 0
-    a2_mu, a2_var, a2_sigma, a2_max, a2_min, a2_sum = 0, 0, 0, 0, 0, 0
-    flat_mu, flat_var, flat_sigma, flat_max, flat_min, flat_sum = 0, 0, 0, 0, 0, 0
+    matrix = np.array(list).reshape(3, 3)
+    trans = matrix.transpose()
 
-    ## Helper functions 
-    def _mean(n_list: list) -> float:
-        if not n_list:
-            raise ValueError('List can not be empty.')
-        return sum(n_list) / len(n_list)
-    # End _mean() 
+    a1_mu = [float(np.mean(trans[0])), float(np.mean(trans[1])), float(np.mean(trans[2]))]
+    a1_var = [float(np.var(trans[0])), float(np.var(trans[1])), float(np.var(trans[2]))]
+    a1_sigma = [float(np.std(trans[0])), float(np.std(trans[1])), float(np.std(trans[2]))]
+    a1_max = [int(np.max(trans[0])), int(np.max(trans[1])), int(np.max(trans[2]))]
+    a1_min = [int(np.min(trans[0])), int(np.min(trans[1])), int(np.min(trans[2]))]
+    a1_sum = [int(np.sum(trans[0])), int(np.sum(trans[1])), int(np.sum(trans[2]))]
 
-    def _variance(n_list: list) -> float:
-        if not n_list:
-            raise ValueError('List can not be empty.')
-        mu = _mean(n_list)
-        return sum((x - mu) ** 2 for x in n_list) / len(n_list)
-    # End _variance() 
+    a2_mu = [float(np.mean(matrix[0])), float(np.mean(matrix[1])), float(np.mean(matrix[2]))]
+    a2_var = [float(np.var(matrix[0])), float(np.var(matrix[1])), float(np.var(matrix[2]))]
+    a2_sigma = [float(np.std(matrix[0])), float(np.std(matrix[1])), float(np.std(matrix[2]))]
+    a2_max = [int(np.max(matrix[0])), int(np.max(matrix[1])), int(np.max(matrix[2]))]
+    a2_min = [int(np.min(matrix[0])), int(np.min(matrix[1])), int(np.min(matrix[2]))]
+    a2_sum = [int(np.sum(matrix[0])), int(np.sum(matrix[1])), int(np.sum(matrix[2]))]
 
-    def _sigma(n_list: list) -> float:
-        if not n_list:
-            raise ValueError('List cannot be empty')
-        var = _variance(n_list)
-        return sqrt(var)
-    # End _sigma() 
-
-
-    flat_mu = _mean(list)
-    flat_var = _variance(list)
-    flat_sigma = _sigma(list)
-    flat_max = max(list)
-    flat_min = min(list)
-    flat_sum = sum(list)
+    flat_mu = float(np.mean(list))
+    flat_var = float(np.var(list))
+    flat_sigma = float(np.std(list))
+    flat_max = int(np.max(list))
+    flat_min = int(np.min(list))
+    flat_sum = int(np.sum(list))
 
 
     ## Define return dict 
@@ -64,28 +53,6 @@ def calculate(list: list) -> dict:
                    }
 
 
-    ## Test prints 
-    """
-    print()
-    print(list)
-    print('Arithmetic mean:', flat_mu)
-    print('Variance:', flat_var)
-    print('Std deviation:',flat_sigma)
-    print('Max:', flat_max)
-    print('Min:', flat_min)
-    print('Sum:', flat_sum)
-    print()
-    """
-
     return calculations
 # End calculate() 
 
-
-nums = [0,1,2,3,4,5,6,7,8] 
-nums2 = [1]
-nums3 = [0,1,2,3,4,5,6,7,8,9]
-stats = calculate(nums)
-print(stats)
-print()
-#calculate(nums2)
-#calculate(nums3)
