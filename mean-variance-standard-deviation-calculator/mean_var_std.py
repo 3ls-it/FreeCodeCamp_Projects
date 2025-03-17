@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# (c) 2025 J. Adams jfa63[at]duck[dot]com
+# Released under the 2-clause BSD Licence
+
 import numpy as np
 
 
@@ -56,3 +59,4 @@ def calculate(list: list) -> dict:
     return calculations
 # End calculate() 
 
+print(calculate([0,1,2,3,4,5,6,7,8]))
