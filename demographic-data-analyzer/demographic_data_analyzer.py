@@ -20,14 +20,22 @@ def calculate_demographic_data(print_data=True):
     # What is the percentage of people who have a Bachelor's degree?  
     with_bachelors = (df['education'] == 'Bachelors').sum()
     percentage_bachelors = round((with_bachelors / dfsize) * 100, 1)
-
+    
     # What percentage of people with advanced education 
     # (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K? 
-    bachelors_50k = ((df['education'] == 'Bachelors') & (df['salary'] == '>50K')).sum()
-    masters_50k = ((df['education'] == 'Masters') & (df['salary'] == '>50K')).sum()
-    doctorate_50k = ((df['education'] == 'Doctorate') & (df['salary'] == '>50K')).sum()
-    adv_sum = bachelors_50k + masters_50k + doctorate_50k
-    higher_education = round((adv_sum / dfsize) * 100, 1)
+    bachelors_all = len(df[(df['education'] == 'Bachelors')])
+    bachelors_50k = len(df[(df['education'] == 'Bachelors') & (df['salary'] == '>50K')])
+    
+    masters_all = len(df[(df['education'] == 'Masters')])
+    masters_50k = len(df[(df['education'] == 'Masters') & (df['salary'] == '>50K')])
+
+    doctorate_all = len(df[(df['education'] == 'Doctorate')])
+    doctorate_50k = len(df[(df['education'] == 'Doctorate') & (df['salary'] == '>50K')])
+
+    adv_all = bachelors_all + masters_all + doctorate_all
+    adv_50k = bachelors_50k + masters_50k + doctorate_50k
+
+    higher_education = round((adv_50k / adv_all) * 100, 1)
 
     # What percentage of people without advanced education make more than 50K?  
     # with and without `Bachelors`, `Masters`, or `Doctorate` 
