@@ -1,47 +1,51 @@
+#!/data/data/com.termux/files/usr/bin/env python3
 import pandas as pd
 
 
 def calculate_demographic_data(print_data=True):
-    # Read data from file
-    df = None
+    # Read data from file 
+    df = pd.read_csv('adult.data.csv')
+    #print(df)
 
     # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
-    race_count = None
+    races = df['race']
+    race_count = races.value_counts()
+    #print(race_count)
 
-    # What is the average age of men?
-    average_age_men = None
+    # What is the average age of men? 
+    average_age_men = round(df[df['sex'] == 'Male']['age'].mean(), 1)
+    #print(average_age_men)
 
-    # What is the percentage of people who have a Bachelor's degree?
+    # What is the percentage of people who have a Bachelor's degree?  
     percentage_bachelors = None
 
-    # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
-    # What percentage of people without advanced education make more than 50K?
+    # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K? 
+    # What percentage of people without advanced education make more than 50K?  
 
-    # with and without `Bachelors`, `Masters`, or `Doctorate`
+    # with and without `Bachelors`, `Masters`, or `Doctorate` 
     higher_education = None
     lower_education = None
 
-    # percentage with salary >50K
+    # percentage with salary >50K  
     higher_education_rich = None
     lower_education_rich = None
 
-    # What is the minimum number of hours a person works per week (hours-per-week feature)?
+    # What is the minimum number of hours a person works per week (hours-per-week feature)?  
     min_work_hours = None
 
-    # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
+    # What percentage of the people who work the minimum number of hours per week have a salary of >50K?  
     num_min_workers = None
 
     rich_percentage = None
 
-    # What country has the highest percentage of people that earn >50K?
+    # What country has the highest percentage of people that earn >50K?  
     highest_earning_country = None
     highest_earning_country_percentage = None
 
-    # Identify the most popular occupation for those who earn >50K in India.
+    # Identify the most popular occupation for those who earn >50K in India.  
     top_IN_occupation = None
 
-    # DO NOT MODIFY BELOW THIS LINE
-
+    # DO NOT MODIFY BELOW THIS LINE   
     if print_data:
         print("Number of each race:\n", race_count) 
         print("Average age of men:", average_age_men)
@@ -67,3 +71,8 @@ def calculate_demographic_data(print_data=True):
         highest_earning_country_percentage,
         'top_IN_occupation': top_IN_occupation
     }
+
+
+
+calculate_demographic_data()
+#calculate_demographic_data(print_data=False)
