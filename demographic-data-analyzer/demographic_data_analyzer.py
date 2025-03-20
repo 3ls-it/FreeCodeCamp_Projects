@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/env python3
+#!/usr/bin/env python3
 import pandas as pd
 
 
@@ -11,11 +11,9 @@ def calculate_demographic_data(print_data=True):
     # This should be a Pandas series with race names as the index labels. 
     races = df['race']
     race_count = races.value_counts()
-    #print(race_count)
 
     # What is the average age of men? 
     average_age_men = round(df[df['sex'] == 'Male']['age'].mean(), 1)
-    #print(average_age_men)
 
     # What is the percentage of people who have a Bachelor's degree?  
     with_bachelors = (df['education'] == 'Bachelors').sum()
@@ -59,13 +57,14 @@ def calculate_demographic_data(print_data=True):
     rich_percentage = round((min_hours_50k / num_min_workers) * 100, 1)
 
     # What country has the highest percentage of people that earn >50K?  
-    #highest_earners = df[df['salary'] == '>50K']
     highest_earners = df.groupby('native-country')['salary'].apply(lambda x: (x == '>50K').mean() * 100)
     highest_earning_country = highest_earners.idxmax()
     highest_earning_country_percentage = round(highest_earners.max(), 1)
 
     # Identify the most popular occupation for those who earn >50K in India.  
-    top_IN_occupation = None
+    top_IN_salaries = df[(df['native-country'] == 'India') & (df['salary'] == '>50K')]
+    top_IN_occupation = top_IN_salaries['occupation'].value_counts().idxmax() 
+
 
     # DO NOT MODIFY BELOW THIS LINE   
     if print_data:
@@ -94,7 +93,3 @@ def calculate_demographic_data(print_data=True):
         'top_IN_occupation': top_IN_occupation
     }
 
-
-
-calculate_demographic_data()
-#calculate_demographic_data(print_data=False)
