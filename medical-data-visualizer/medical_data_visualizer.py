@@ -6,16 +6,20 @@ import numpy as np
 
 # 1
 df = pd.read_csv('medical_examination.csv')
-print(df)
 
 # 2
+# Add 'overweight' column, initialise to 0 
 df['overweight'] = 0
-# height is in cm, so multiply by 100  
+# height is in cm, so divide  by 100  
 bmi = df['weight'] / ((df['height']/100) ** 2)
+# if bmi is > 25, set overweight to 1 
 df.loc[bmi > 25, 'overweight'] = 1
-print(df)
+#print(df['overweight'])
 
 # 3
+# Normalize data by making 0 always good and 1 always bad.
+# Eg.: If the value of cholesterol or gluc is 1, set the value to 0.
+# If the value is more than 1, set the value to 1.
 
 
 # 4
