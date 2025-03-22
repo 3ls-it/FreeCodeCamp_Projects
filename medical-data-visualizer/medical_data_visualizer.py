@@ -6,10 +6,14 @@ import numpy as np
 
 # 1
 df = pd.read_csv('medical_examination.csv')
-#print(df)
+print(df)
 
 # 2
-df['overweight'] = None
+df['overweight'] = 0
+# height is in cm, so multiply by 100  
+bmi = df['weight'] / ((df['height']/100) ** 2)
+df.loc[bmi > 25, 'overweight'] = 1
+print(df)
 
 # 3
 
