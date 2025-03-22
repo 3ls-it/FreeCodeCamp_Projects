@@ -1,10 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/env python3
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
 # 1
-df = None
+df = pd.read_csv('medical_examination.csv')
+#print(df)
 
 # 2
 df['overweight'] = None
