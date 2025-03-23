@@ -18,8 +18,16 @@ df.loc[bmi > 25, 'overweight'] = 1
 
 # 3
 # Normalize data by making 0 always good and 1 always bad.
-# Eg.: If the value of cholesterol or gluc is 1, set the value to 0.
+# If the value of cholesterol or gluc is 1, set the value to 0.
 # If the value is more than 1, set the value to 1.
+gluc = df['gluc']
+df.loc[gluc == 1, 'gluc'] = 0
+df.loc[gluc > 1, 'gluc'] = 1
+chol = df['cholesterol']
+df.loc[chol == 1, 'cholesterol'] = 0
+df.loc[chol > 1, 'cholesterol'] = 1
+#print(df['gluc'])
+#print(df['cholesterol'])
 
 
 # 4
