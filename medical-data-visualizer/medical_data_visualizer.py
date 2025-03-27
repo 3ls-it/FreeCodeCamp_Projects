@@ -33,7 +33,9 @@ df.loc[chol > 1, 'cholesterol'] = 1
 # 4
 def draw_cat_plot():
     # 5
-    df_cat = None
+    #['active', 'alco', 'cardio', 'cholesterol', 'gluc', 'overweight', 'smoke']
+    df_cat = df.melt()
+    print(df_cat)
 
 
     # 6
@@ -49,8 +51,8 @@ def draw_cat_plot():
 
 
     # 9
-    fig.savefig('catplot.png')
-    return fig
+    #fig.savefig('catplot.png')
+    #return fig
 
 
 # 10
@@ -76,3 +78,6 @@ def draw_heat_map():
     # 16
     fig.savefig('heatmap.png')
     return fig
+
+
+draw_cat_plot()
