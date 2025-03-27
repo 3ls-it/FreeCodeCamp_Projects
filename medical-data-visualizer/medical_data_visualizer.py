@@ -33,10 +33,18 @@ df.loc[chol > 1, 'cholesterol'] = 1
 # 4
 def draw_cat_plot():
     # 5
-    #['active', 'alco', 'cardio', 'cholesterol', 'gluc', 'overweight', 'smoke']
     df_cat = df.melt()
-    print(df_cat)
+    varbls = df_cat['variable']
+    # We need to split in to two groupss:
+    # cardio = 0 and cardio = 1 
+    cardios = df_cat.loc[varbls == 'cardio']
 
+    actives = df_cat.loc[varbls == 'active']
+    alcos = df_cat.loc[varbls == 'alco']
+    chols = df_cat.loc[varbls == 'cholesterol']
+    glucs = df_cat.loc[varbls == 'gluc']
+    overs = df_cat.loc[varbls == 'overweight']    
+    smokes = df_cat.loc[varbls == 'smoke']
 
     # 6
     df_cat = None
