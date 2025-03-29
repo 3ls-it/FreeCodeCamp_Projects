@@ -48,23 +48,35 @@ def draw_cat_plot():
     # 9
     fig.savefig('catplot.png')
     return fig
+# End draw_cat_plot() 
 
 
 # 10
 def draw_heat_map():
     # 11 
-    filter1 = df['ap_lo'] <= df['ap_hi']
-    filter2 = df['height'] >= df['height'].quantile(0.025)
-    filter3 = df['height'] <= df['height'].quantile(0.975)
-    filter4 = df['weight'] >= df['weight'].quantile(0.025)
-    filter5 = df['weight'] <= df['weight'].quantile(0.975)
-
-    df_heat = df[filter1 & filter2 & filter3 & filter4 & filter5]
+    #Clean the data in the df_heat variable by filtering out the following
+    # patient segments that represent incorrect data:
+    #
+    # -diastolic pressure is higher than systolic
+    #(Keep the correct data with (df['ap_lo'] <= df['ap_hi']))
+    diastolic = df['ap_lo'] <= df['ap_hi']
+    # -height is less than the 2.5th percentile
+    # (Keep the correct data with (df['height'] >= df['height'].quantile(0.025)))
+    height_less = df['height'] >= df['height'].quantile(0.025)
+    # -height is more than the 97.5th percentile
+    height_more = df['height'] <= df['height'].quantile(0.975)
+    # -weight is less than the 2.5th percentile
+    weight_less = df['weight'] >= df['weight'].quantile(0.025)
+    # -weight is more than the 97.5th percentile
+    weight_more = df['weight'] <= df['weight'].quantile(0.975)
+    df_heat = df[diastolic & height_less & height_more & weight_less & weight_more]
 
     # 12 
+    #Calculate the correlation matrix and store it in the corr variable. 
     corr = df_heat.corr(method='pearson')
 
     # 13 
+    #Generate a mask for the upper triangle and store it in the mask variable. 
     mask = np.zeros_like(corr)
     mask[np.triu_indices_from(mask)] = True
 
@@ -73,12 +85,13 @@ def draw_heat_map():
 
     # 15 
     ax = sns.heatmap(corr, mask=mask, annot=True, fmt=".1f", linewidths=1
-                     ,center=0.0, vmax=0.25, vmin=-0.1, square=True, cbar_kws={"shrink":0.5})
+                ,center=0.0, vmax=0.25, vmin=-0.1, square=True, cbar_kws={"shrink":0.5})
 
     # 16
     fig.savefig('heatmap.png')
     return fig
+# End draw_heat_map() 
 
 
-draw_cat_plot()
+#draw_cat_plot()
 draw_heat_map()
