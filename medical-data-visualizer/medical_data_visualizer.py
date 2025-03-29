@@ -26,62 +26,54 @@ df.loc[gluc > 1, 'gluc'] = 1
 chol = df['cholesterol']
 df.loc[chol == 1, 'cholesterol'] = 0
 df.loc[chol > 1, 'cholesterol'] = 1
-#print(df['gluc'])
-#print(df['cholesterol'])
 
 
 # 4
 def draw_cat_plot():
     # 5
-    df_cat = df.melt()
-    varbls = df_cat['variable']
-    # We need to split in to two groupss:
-    # cardio = 0 and cardio = 1 
-    cardios = df_cat.loc[varbls == 'cardio']
-
-    actives = df_cat.loc[varbls == 'active']
-    alcos = df_cat.loc[varbls == 'alco']
-    chols = df_cat.loc[varbls == 'cholesterol']
-    glucs = df_cat.loc[varbls == 'gluc']
-    overs = df_cat.loc[varbls == 'overweight']    
-    smokes = df_cat.loc[varbls == 'smoke']
+    df_cat = df.melt(id_vars='cardio', value_vars=['active', 'alco', 'cardio', 'cholesterol', 'gluc', 'overweight', 'smoke'])
+    df_cat['total'] = 1
 
     # 6
-    df_cat = None
-    
+    # We need to split in to two groups: 
+    # cardio = 0 and cardio = 1 
+    df_cat = df_cat.groupby(['cardio', 'variable', 'value'], as_index=False).count()
 
     # 7
-
-
+    cat_plot = sns.catplot(x='variable', y='total', hue='value', data=df_cat, col='cardio', kind='bar').fig
 
     # 8
-    fig = None
-
+    fig = cat_plot
 
     # 9
-    #fig.savefig('catplot.png')
-    #return fig
+    fig.savefig('catplot.png')
+    return fig
 
 
 # 10
 def draw_heat_map():
-    # 11
-    df_heat = None
+    # 11 
+    filter1 = df['ap_lo'] <= df['ap_hi']
+    filter2 = df['height'] >= df['height'].quantile(0.025)
+    filter3 = df['height'] <= df['height'].quantile(0.975)
+    filter4 = df['weight'] >= df['weight'].quantile(0.025)
+    filter5 = df['weight'] <= df['weight'].quantile(0.975)
 
-    # 12
-    corr = None
+    df_heat = df[filter1 & filter2 & filter3 & filter4 & filter5]
 
-    # 13
-    mask = None
+    # 12 
+    corr = df_heat.corr(method='pearson')
 
+    # 13 
+    mask = np.zeros_like(corr)
+    mask[np.triu_indices_from(mask)] = True
 
+    # 14 
+    fig, ax = plt.subplots(figsize=(14,10))
 
-    # 14
-    fig, ax = None
-
-    # 15
-
-
+    # 15 
+    ax = sns.heatmap(corr, mask=mask, annot=True, fmt=".1f", linewidths=1
+                     ,center=0.0, vmax=0.25, vmin=-0.1, square=True, cbar_kws={"shrink":0.5})
 
     # 16
     fig.savefig('heatmap.png')
@@ -89,3 +81,4 @@ def draw_heat_map():
 
 
 draw_cat_plot()
+draw_heat_map()
