@@ -20,8 +20,7 @@ Glucose	Examination Feature	gluc	1: normal, 2: above normal, 3: well above norma
 Smoking	Subjective Feature	smoke	binary
 Alcohol intake	Subjective Feature	alco	binary
 Physical activity	Subjective Feature	active	binary
-Presence or absence of cardiovascular disease	Target Variable	cardio	binar
-y
+Presence or absence of cardiovascular disease	Target Variable	cardio	binary
 
 
 Instructions
