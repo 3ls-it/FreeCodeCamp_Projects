@@ -1,4 +1,3 @@
-#!/data/data/com.termux/files/usr/bin/env python3
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -31,21 +30,32 @@ df.loc[chol > 1, 'cholesterol'] = 1
 # 4
 def draw_cat_plot():
     # 5
-    df_cat = df.melt(id_vars='cardio', value_vars=['active', 'alco', 'cardio', 'cholesterol', 'gluc', 'overweight', 'smoke'])
+    # Create a DataFrame for the cat plot using pd.melt with values from
+    # cholesterol, gluc, smoke, alco, active, and overweight
+    # in the df_cat variable.
+    df_cat = df.melt(id_vars='cardio',
+                     value_vars=['active', 'alco', 'cardio', 'cholesterol',
+                                 'gluc', 'overweight', 'smoke'])
     df_cat['total'] = 1
 
     # 6
-    # We need to split in to two groups: 
-    # cardio = 0 and cardio = 1 
+    # Group and reformat the data in df_cat to split it by cardio.
+    #Show the counts of each feature.
     df_cat = df_cat.groupby(['cardio', 'variable', 'value'], as_index=False).count()
 
     # 7
-    cat_plot = sns.catplot(x='variable', y='total', hue='value', data=df_cat, col='cardio', kind='bar').fig
+    # Convert the data into long format and create a chart that shows
+    # the value counts of the categorical features using the following method
+    # provided by the seaborn library import: sns.catplot().
+    cat_plot = sns.catplot(x='variable', y='total', hue='value', data=df_cat,
+                           col='cardio', kind='bar').fig
 
     # 8
+    # Get the figure for the output and store it in the fig variable.
     fig = cat_plot
 
     # 9
+    # Do not modify the next two lines.
     fig.savefig('catplot.png')
     return fig
 # End draw_cat_plot() 
@@ -72,26 +82,28 @@ def draw_heat_map():
     df_heat = df[diastolic & height_less & height_more & weight_less & weight_more]
 
     # 12 
-    #Calculate the correlation matrix and store it in the corr variable. 
+    # Calculate the correlation matrix and store it in the corr variable. 
     corr = df_heat.corr(method='pearson')
 
     # 13 
-    #Generate a mask for the upper triangle and store it in the mask variable. 
+    # Generate a mask for the upper triangle and store it in the mask variable. 
     mask = np.zeros_like(corr)
     mask[np.triu_indices_from(mask)] = True
 
     # 14 
-    fig, ax = plt.subplots(figsize=(14,10))
+    # Set up the matplotlib figure.
+    fig, axes = plt.subplots(figsize=(11,9))
 
     # 15 
-    ax = sns.heatmap(corr, mask=mask, annot=True, fmt=".1f", linewidths=1
-                ,center=0.0, vmax=0.25, vmin=-0.1, square=True, cbar_kws={"shrink":0.5})
+    # Plot the correlation matrix using the method provided by
+    # the seaborn library import: sns.heatmap().
+    axes = sns.heatmap(corr, mask=mask, annot=True, fmt=".1f", linewidths=0.5,
+                       center=0.0, vmax=0.25, vmin=-0.1, square=True,
+                       cbar_kws={"shrink":0.5})
 
     # 16
+    # Do not modify the next two lines.
     fig.savefig('heatmap.png')
     return fig
 # End draw_heat_map() 
 
-
-#draw_cat_plot()
-draw_heat_map()
