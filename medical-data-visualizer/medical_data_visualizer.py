@@ -9,8 +9,8 @@ df = pd.read_csv('medical_examination.csv')
 # 2
 # Add 'overweight' column, initialise to 0 
 df['overweight'] = 0
-# height is in cm, so divide  by 100  
-bmi = df['weight'] / ((df['height']/100) ** 2)
+# height is in cm, so divide it  by 100  
+bmi = df['weight'] / ((df['height']/100)**2)
 # if bmi is > 25, set overweight to 1 
 df.loc[bmi > 25, 'overweight'] = 1
 #print(df['overweight'])
