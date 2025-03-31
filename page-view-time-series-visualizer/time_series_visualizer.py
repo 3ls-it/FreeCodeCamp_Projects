@@ -1,3 +1,4 @@
+#!/data/data/com.termux/files/usr/bin/env python3
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -5,10 +6,14 @@ from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
 # Import data (Make sure to parse dates. Consider setting index column to 'date'.)
-df = None
+df = pd.read_csv('fcc-forum-pageviews.csv', index_col='date')
+print(df)
 
 # Clean data
-df = None
+dates_less = df['value'] >= df['value'].quantile(0.025)
+dates_more = df['value'] <= df['value'].quantile(0.975)
+df = df[dates_less & dates_more]
+print(df)
 
 
 def draw_line_plot():
@@ -21,6 +26,8 @@ def draw_line_plot():
     # Save image and return fig (don't change this part)
     fig.savefig('line_plot.png')
     return fig
+# End draw_line_plot() 
+
 
 def draw_bar_plot():
     # Copy and modify data for monthly bar plot
@@ -35,6 +42,8 @@ def draw_bar_plot():
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
     return fig
+# End draw_bar_plot() 
+
 
 def draw_box_plot():
     # Prepare data for box plots (this part is done!)
@@ -52,3 +61,4 @@ def draw_box_plot():
     # Save image and return fig (don't change this part)
     fig.savefig('box_plot.png')
     return fig
+# End draw_box_plot() 
