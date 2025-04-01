@@ -7,18 +7,21 @@ register_matplotlib_converters()
 
 # Import data (Make sure to parse dates. Consider setting index column to 'date'.)
 df = pd.read_csv('fcc-forum-pageviews.csv', index_col='date')
-print(df)
+#print(df)
 
 # Clean data
 dates_less = df['value'] >= df['value'].quantile(0.025)
 dates_more = df['value'] <= df['value'].quantile(0.975)
 df = df[dates_less & dates_more]
-print(df)
+#print(df)
 
 
 def draw_line_plot():
     # Draw line plot
+    df_line = df.copy()
 
+    fig, axes = plt.subplots(figsize=(32,10))
+    axes = sns.lineplot(data=df_line, x='date', y='value')
 
 
 
@@ -62,3 +65,6 @@ def draw_box_plot():
     fig.savefig('box_plot.png')
     return fig
 # End draw_box_plot() 
+
+lnplt = draw_line_plot()
+print(lnplt)
