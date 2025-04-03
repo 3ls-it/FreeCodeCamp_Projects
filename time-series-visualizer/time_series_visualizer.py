@@ -46,6 +46,13 @@ def draw_bar_plot():
     # Draw bar plot
     fig, axes = plt.subplots(figsize=(15.14, 13.30))
     axes.plot(df_bar['Page Views'])
+    plt.title('', fontsize=24)
+    plt.xlabel('Years', fontsize=20)
+    plt.ylabel('Average Page Views', fontsize=20)
+    plt.setp(axes.spines.values(), linewidth=1.5)
+    plt.tick_params(axis='both', length=8, direction='out', width=1.5)
+    plt.xticks(fontsize = 20)
+    plt.yticks(fontsize = 20)
 
     # Save image and return fig (don't change this part)
     fig.savefig('bar_plot.png')
@@ -69,4 +76,4 @@ def draw_box_plot():
     return fig
 # End draw_box_plot() 
 
-draw_line_plot()
+draw_bar_plot()
