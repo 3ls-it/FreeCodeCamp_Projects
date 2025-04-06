@@ -9,18 +9,23 @@ register_matplotlib_converters()
 df = pd.read_csv('fcc-forum-pageviews.csv', parse_dates=['date'], index_col='date')
 #print(df)
 
-# Clean data
+# Clean the data by filtering out days when the page views were in the
+# top 2.5% of the dataset or bottom 2.5% of the dataset.
 dates_less = df['value'] >= df['value'].quantile(0.025)
 dates_more = df['value'] <= df['value'].quantile(0.975)
 df = df[dates_less & dates_more]
 
 
 def draw_line_plot():
-    # Draw line plot
+    # Create a draw_line_plot function that uses Matplotlib to
+    # draw a line chart similar to "examples/Figure_1.png".
     df_line = df.copy(deep=True)
     df_line = df_line.rename(columns={'value': 'Page Views'})
     df_line = df_line.rename_axis(index={'date': 'Date'})
 
+    # The title should be Daily freeCodeCamp Forum Page Views 5/2016-12/2019.
+    # The label on the x axis should be Date and the label on the y axis
+    # should be Page Views.
     fig, axes = plt.subplots(figsize=(32,10))
     axes.plot(df_line.index, df_line['Page Views'], color='firebrick', linewidth=3)
     plt.title('Daily freeCodeCamp Forum Page Views 5/2016-12/2019', fontsize=24)
@@ -38,18 +43,28 @@ def draw_line_plot():
 
 
 def draw_bar_plot():
+    # Create a draw_bar_plot function that draws a bar chart similar
+    # to "examples/Figure_2.png"
     # Copy and modify data for monthly bar plot
     df_bar = df.copy(deep=True)
-    df_bar = df_bar.rename(columns={'value': 'Page Views'})
-    df_bar = df_bar.rename_axis(index={'date': 'Date'})
+    df_bar['year'] = df.index.year
+    df_bar['month'] = df.index.month_name()
 
-    # Draw bar plot
-    fig, axes = plt.subplots(figsize=(15.14, 13.30))
-    axes.plot(df_bar['Page Views'])
-    plt.title('', fontsize=24)
-    plt.xlabel('Years', fontsize=20)
-    plt.ylabel('Average Page Views', fontsize=20)
-    plt.setp(axes.spines.values(), linewidth=1.5)
+    # It should show average daily page views for each month grouped by year.
+    df_bar = df_bar.groupby(['year', 'month'])['value'].mean()
+    df_bar = df_bar.unstack(level='month')
+    df_bar = df_bar[['January', 'February', 'March', 'April', 'May',
+                     'June', 'July', 'August', 'September', 'October',
+                     'November', 'December']]
+    fig = df_bar.plot.bar(figsize=(15.14,13.30)).figure
+
+    # The legend should show month labels and have a title of Months.
+    plt.legend(title='Months', prop={'size': 20}, title_fontsize=20);
+
+    # On the chart, the label on the x axis should be Years and the
+    # label on the y axis should be Average Page Views.
+    plt.xlabel('Years', fontsize=20);
+    plt.ylabel('Average Page Views', fontsize=20);
     plt.tick_params(axis='both', length=8, direction='out', width=1.5)
     plt.xticks(fontsize = 20)
     plt.yticks(fontsize = 20)
@@ -76,4 +91,4 @@ def draw_box_plot():
     return fig
 # End draw_box_plot() 
 
-draw_bar_plot()
+#draw_box_plot()
