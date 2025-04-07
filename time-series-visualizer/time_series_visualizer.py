@@ -1,13 +1,12 @@
-#!/data/data/com.termux/files/usr/bin/env python3
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
+
 # Import data (Make sure to parse dates. Consider setting index column to 'date'.)
 df = pd.read_csv('fcc-forum-pageviews.csv', parse_dates=['date'], index_col='date')
-#print(df)
 
 # Clean the data by filtering out days when the page views were in the
 # top 2.5% of the dataset or bottom 2.5% of the dataset.
@@ -112,4 +111,3 @@ def draw_box_plot():
     return fig
 # End draw_box_plot() 
 
-draw_box_plot()
