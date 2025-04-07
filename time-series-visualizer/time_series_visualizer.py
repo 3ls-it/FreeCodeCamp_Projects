@@ -76,24 +76,34 @@ def draw_bar_plot():
 
 
 def draw_box_plot():
-    # Prepare data for box plots (this part is done!)
+    # Create a draw_box_plot function that uses Seaborn to draw two
+    # adjacent box plots similar to "examples/Figure_3.png".
+    # These box plots should show how the values are distributed within
+    # a given year or month and how it compares over time.
     df_box = df.copy()
     df_box.reset_index(inplace=True)
     df_box['year'] = [d.year for d in df_box.date]
     df_box['month'] = [d.strftime('%b') for d in df_box.date]
 
-    # Draw box plots (using Seaborn)
     fig, axes = plt.subplots(1, 2, figsize=(28.80, 10.80))
 
-    sns.boxplot(data=df_box, ax=axes[0], x='year', y='value')
-    axes[0].set_title('Year-wise Box Plot (Trend)', size=16)
+    # Draw box plots (using Seaborn)
+    sns.boxplot(data=df_box, ax=axes[0], x='year', y='value',
+                hue='year', legend=False, palette='Set1')
+
+    # The title of the first chart should be "Year-wise Box Plot (Trend)"
+    axes[0].set_title('Year-wise Box Plot (Trend)', size=20)
     axes[0].set_xlabel('Year', size=16)
     axes[0].set_ylabel('Page Views', size=16)
 
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
               'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    sns.boxplot(data=df_box, ax=axes[1], order=months, x='month', y='value')
-    axes[1].set_title('Month-wise Box Plot (Seasonality)', size=16)
+
+    # Draw box plots (using Seaborn)
+    sns.boxplot(data=df_box, ax=axes[1], order=months, x='month',
+                y='value', hue='month', legend=False, palette='Set3')
+    # the title of the second chart should be "Month-wise Box Plot (Seasonality)".
+    axes[1].set_title('Month-wise Box Plot (Seasonality)', size=20)
     axes[1].set_xlabel('Month', size=16)
     axes[1].set_ylabel('Page Views', size=16)
 
