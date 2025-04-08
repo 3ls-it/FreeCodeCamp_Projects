@@ -1,0 +1,6 @@
+# Patterns to ignore for the FreeCodeCamp projects
+
+
+__pycache__
+# Ignore Vi backup files
+.*.un~
